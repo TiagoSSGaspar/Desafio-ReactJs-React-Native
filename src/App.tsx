@@ -1,11 +1,23 @@
 import React from 'react';
-import GlobalStyle from './styles/global'
+import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
-const App:React.FC = () => (
-  <>
-    <h1>Hello World</h1>
-    <GlobalStyle/>
-  </>
-);
+import Routes from './routes';
+import GlobalStyles from './styles/global';
+import Header from './components/Header';
+import { CartProvider } from './hooks/useCart';
+
+const App = (): JSX.Element => {
+  return (
+    <BrowserRouter>
+      <CartProvider>
+        <GlobalStyles />
+        <Header />
+        <Routes />
+        <ToastContainer autoClose={3000} />
+      </CartProvider>
+    </BrowserRouter>
+  );
+};
 
 export default App;
