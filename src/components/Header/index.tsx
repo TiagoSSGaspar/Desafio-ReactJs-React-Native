@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import { MdShoppingBasket } from 'react-icons/md';
 
 import logo from '../../assets/images/logo.svg';
+import cartShop from '../../assets/images/cart-icon.svg';
+
 import { Container, Cart } from './styles';
 import { useCart } from '../../hooks/useCart';
 
@@ -12,7 +13,7 @@ const Header = (): JSX.Element => {
   return (
     <Container>
       <Link to="/">
-        <img src={logo} alt="Rocketshoes" />
+        <img src={logo} alt="SuperaGames" />
       </Link>
 
       <Cart to="/cart">
@@ -22,7 +23,7 @@ const Header = (): JSX.Element => {
             {cartSize === 1 ? `${cartSize} item` : `${cartSize} itens`}
           </span>
         </div>
-        <MdShoppingBasket size={36} color="#FFF" />
+        <img src={cartShop} alt="Cart" />
       </Cart>
     </Container>
   );

@@ -5,6 +5,7 @@ import { ProductList } from './styles';
 import { api } from '../../services/api';
 import { formatPrice } from '../../util/format';
 import { useCart } from '../../hooks/useCart';
+import Button from '../../components/Button';
 
 interface Product {
   id: number;
@@ -53,7 +54,7 @@ const Home = (): JSX.Element => {
         <img src={`images/${product.image}`} alt={product.name} />
         <strong>{product.name}</strong>
         <span>{product.price}</span>
-        <button
+        <Button
           type="button"
           data-testid="add-product-button"
           onClick={() => handleAddProduct(product.id)}
@@ -64,7 +65,7 @@ const Home = (): JSX.Element => {
           </div>
 
           <span>ADICIONAR AO CARRINHO</span>
-        </button>
+        </Button>
       </li>
       ))}
     </ProductList>

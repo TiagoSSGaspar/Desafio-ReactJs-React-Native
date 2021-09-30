@@ -35,4 +35,7 @@ export const Cart = styled(Link)`
       color: #999;
     }
   }
+  img {
+    width: 32px;
+  }
 `;
