@@ -14,6 +14,7 @@ interface UpdateProductAmount {
 
 interface CartContextData {
   cart: Product[];
+  shipping_value?: number;
   addProduct: (productId: number) => Promise<void>;
   removeProduct: (productId: number) => void;
   updateProductAmount: ({ productId, amount }: UpdateProductAmount) => void;
