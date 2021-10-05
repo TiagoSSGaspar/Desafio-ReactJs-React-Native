@@ -1,28 +1,15 @@
-import React, { FormEvent, forwardRef, useImperativeHandle, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
+import { useProductList } from '../../hooks/useProductList';
 
 import { api } from '../../services/api';
-import { Product } from '../../types';
-import { formatPrice } from '../../util/format';
 
 import { Form, Error } from './styles';
 
-interface ProductFormatted extends Product {
-  priceFormatted: string;
-}
 
-interface FormProps {
-  data?: string;
-}
-
-export interface FormRef {
-  handleSubmit(): Promise<void>;
-  products: Product[];
-}
-
-const SearchBar: React.ForwardRefRenderFunction<FormRef, FormProps> = (props, ref) => {
+const SearchBar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [inputError, setInputError] = useState('');
-  const [products, setProducts] = useState<ProductFormatted[]>([]);
+  const {product,setProduct} = useProductList()
 
   async function handleSubmit(event?: FormEvent ): Promise<void> {
     event?.preventDefault();
@@ -34,23 +21,18 @@ const SearchBar: React.ForwardRefRenderFunction<FormRef, FormProps> = (props, re
     try {
         const response = await api.get(`products?q=${searchTerm}`);
 
-        const productsFormated = response.data.map(function(product: Product){
-          return {...product, price: formatPrice(product.price)}
-        })
-        setProducts(productsFormated)
+        const products = response.data
+
+        setProduct(products)
         setSearchTerm('');
         setInputError('');
+
 
     } catch (error) {
         setInputError('Erro na busca por esse Game')
     }
-    console.log(products);
+    console.log(product);
   }
-
-  useImperativeHandle(ref, () => ({
-    handleSubmit,
-    products,
-  }))
 
   return (
     <>
@@ -68,4 +50,4 @@ const SearchBar: React.ForwardRefRenderFunction<FormRef, FormProps> = (props, re
   );
 };
 
-export default forwardRef(SearchBar);
+export default SearchBar;
