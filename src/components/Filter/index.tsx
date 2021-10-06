@@ -16,32 +16,38 @@ const Filter: React.FC = () => {
   const { products, setProducts } = useProductList()
 
   useEffect(() => {
-    const awesomeSort = (data: any[], dir = 'ASC', key: null | string = null) => {
-      const firstElement = (key) ? data[0][key] : data[0];
-      const isNumber = !isNaN(firstElement);
-      const isAsc = dir.toUpperCase() === 'ASC';
+    const data: any = [...products]
+    const key = selectedFilter.key;
+    const dir = selectedFilter.direction;
 
-      if (isNumber) {
-        return data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
+    const firstElement = (key) ? data[0][key] : data[0];
+    const isNumber = !isNaN(firstElement);
+    const isAsc = dir === 'asc';
+
+    if (isNumber) {
+      return setProducts(
+        data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
           const x = (key) ? a[key] : a;
           const y = (key) ? b[key] : b;
           if (isAsc) return x - y;
           if (!isAsc) return y - x;
           return 0;
-        });
-      }
-      return data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
+        })
+      );
+    }
+    return setProducts(
+      data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
         const x = JSON.stringify((key) ? a[key] : a);
         const y = JSON.stringify((key) ? b[key] : b);
 
         if (isAsc) return x.localeCompare(y);
         if (!isAsc) return y.localeCompare(x);
         return 0;
-      });
-    }
+      })
+    );
 
-    awesomeSort(products, selectedFilter.direction, selectedFilter.key)
-  }, [selectedFilter, setSelectedFilter,products, setProducts])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFilter])
 
   return (
     <Container>
@@ -51,6 +57,7 @@ const Filter: React.FC = () => {
         value={JSON.stringify(selectedFilter)}
         onChange={(e) => setSelectedFilter(JSON.parse(e.target.value))}
         options={[
+          { value: { key: '', direction: '' }, label: 'Selecione uma opção' },
           { value: { key: 'price', direction: 'asc' }, label: 'Preço: Crescente' },
           { value: { key: 'price', direction: 'desc' }, label: 'Preço: Decrescente' },
           { value: { key: 'score', direction: 'desc' }, label: 'Popularidade' },
