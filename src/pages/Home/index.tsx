@@ -2,16 +2,20 @@ import React from 'react';
 
 import SearchBar from '../../components/SearchBar';
 import Catalog from '../../components/Catalog';
-import { Container } from './styles';
+import { Header } from './styles';
+import Filter from '../../components/Filter';
 
 
 const Home = (): JSX.Element => {
 
   return (
-    <Container>
-      <SearchBar/>
+    <>
+      <Header>
+        <SearchBar/>
+        <Filter/>
+      </Header>
       <Catalog/>
-    </Container>
+    </>
   );
 };
 

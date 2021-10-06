@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect } from "react";
 import { useProductList } from "../../hooks/useProductList";
 
 import { api } from "../../services/api";
@@ -7,22 +7,20 @@ import { Container } from "./styles";
 
 
 const Catalog: React.FC = () => {
-  const {product,setProduct} = useProductList()
+  const {products, setProducts} = useProductList()
 
   useEffect(() => {
     async function loadProducts() {
       const response = await api.get('/products');
-      const productsFormated = response.data
-      setProduct(productsFormated)
+      setProducts(response.data)
     }
-
     loadProducts();
-  }, [setProduct]);
+  }, [setProducts]);
 
   return (
     <Container>
       {
-        product.map(product => (
+        products.map(product => (
           <CatalogItem key={product.id} product={product} />
         ))
       }

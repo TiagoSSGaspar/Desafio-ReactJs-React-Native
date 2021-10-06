@@ -14,6 +14,9 @@ export const Container = styled.header`
       opacity: 0.7;
     }
   }
+  @media(max-width: 475px) {
+    flex-direction: column;
+  }
 `;
 
 export const Cart = styled(Link)`

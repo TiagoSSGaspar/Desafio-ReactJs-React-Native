@@ -1,7 +1,7 @@
 import React from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
 
-import { Product } from '../../shared/types';
+import { Product } from '../../shared/model/types';
 
 import { useCart } from '../../hooks/useCart';
 import { formatPrice } from '../../util/format';

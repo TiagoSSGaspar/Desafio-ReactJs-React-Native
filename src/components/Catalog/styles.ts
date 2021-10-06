@@ -6,4 +6,8 @@ export const Container = styled.ul`
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
   list-style: none;
+
+  @media(max-width: 740px) {
+    grid-template-columns: none;
+  }
 `;

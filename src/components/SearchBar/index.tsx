@@ -9,7 +9,7 @@ import { Form, Error } from './styles';
 const SearchBar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [inputError, setInputError] = useState('');
-  const {product,setProduct} = useProductList()
+  const {setProducts} = useProductList()
 
   async function handleSubmit(event?: FormEvent ): Promise<void> {
     event?.preventDefault();
@@ -23,15 +23,13 @@ const SearchBar: React.FC = () => {
 
         const products = response.data
 
-        setProduct(products)
+        setProducts(products)
         setSearchTerm('');
         setInputError('');
-
 
     } catch (error) {
         setInputError('Erro na busca por esse Game')
     }
-    console.log(product);
   }
 
   return (
@@ -40,7 +38,7 @@ const SearchBar: React.FC = () => {
           <input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Digite o nome do repositório"
+              placeholder="Digite o nome do Game"
           />
           <button type="submit">Pesquisar</button>
       </Form>
