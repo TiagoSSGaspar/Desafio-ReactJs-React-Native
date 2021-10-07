@@ -10,11 +10,12 @@ interface CartProviderProps {
 interface UpdateProductAmount {
   productId: number;
   amount: number;
+  shippingValue: number;
 }
 
 interface CartContextData {
   cart: Product[];
-  shipping_value?: number;
+  shippingValue?: number;
   addProduct: (productId: number) => Promise<void>;
   removeProduct: (productId: number) => void;
   updateProductAmount: ({ productId, amount }: UpdateProductAmount) => void;
@@ -42,8 +43,9 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
         const { data: stock } = await api.get<Stock>(`stock/${productId}`)
 
         if(stock.amount > 0) {
-          setCart([...cart, {...product, amount: 1}])
-          localStorage.setItem('@SuperaGames:cart', JSON.stringify([...cart, {...product, amount: 1}]))
+          setCart([...cart, {...product, amount: 1, shippingValue: 10}])
+          localStorage.setItem('@SuperaGames:cart',
+          JSON.stringify([...cart, {...product, amount: 1, shippingValue: 10}]))
           toast('Adicionado')
           return;
         }
@@ -89,6 +91,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   const updateProductAmount = async ({
     productId,
     amount,
+    shippingValue
   }: UpdateProductAmount) => {
     try {
       if(amount < 1){
@@ -113,7 +116,8 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
       const updatedCart = cart.map(cartItem => cartItem.id === productId ? {
         ...cartItem,
-        amount: amount
+        amount: amount,
+        shippingValue: shippingValue
       } : cartItem)
       setCart(updatedCart)
       localStorage.setItem('@SuperaGames:cart', JSON.stringify(updatedCart))

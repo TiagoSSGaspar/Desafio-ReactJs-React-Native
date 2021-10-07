@@ -5,6 +5,7 @@ export interface Product {
   image: string;
   amount: number;
   score: number;
+  shippingValue: number;
 }
 
 export interface Stock {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   MdDelete,
   MdAddCircleOutline,
@@ -15,27 +15,47 @@ interface Product {
   price: number;
   image: string;
   amount: number;
+  shippingValue: number;
 }
 
 const Cart = (): JSX.Element => {
   const { cart, removeProduct, updateProductAmount } = useCart();
 
   const cartFormatted = cart.map(product => ({
-    ...product, priceFormatted: formatPrice(product.price), subtotal: formatPrice(product.price * product.amount)
+    ...product,
+    priceFormatted: formatPrice(product.price),
+    subtotal: formatPrice(product.price * product.amount),
+    shippingValueFormatted:formatPrice(product.shippingValue)
   }))
-  const total =
-    formatPrice(
-      cartFormatted.reduce((sumTotal, product) => {
-        sumTotal += product.price * product.amount
 
-        return sumTotal
-      }, 0)
-    )
+  const total = cartFormatted.reduce((sumTotal, product) => {
+    sumTotal += product.price * product.amount
+    return sumTotal + product.shippingValue
+  }, 0)
+
+  useEffect(() => {
+    function handleFreeShipping() {
+      if(total > 250) {
+        cart.forEach(product => {
+          const IncrementArguments = {
+            productId: product.id,
+            amount: product.amount,
+            shippingValue: product.shippingValue = 0
+          }
+          updateProductAmount(IncrementArguments)
+        })
+      }
+    }
+    handleFreeShipping()
+  }, [total])
+
+
 
   function handleProductIncrement(product: Product) {
     const IncrementArguments = {
       productId: product.id,
-      amount: product.amount + 1
+      amount: product.amount + 1,
+      shippingValue: product.shippingValue + 10
     }
     updateProductAmount(IncrementArguments)
   }
@@ -43,7 +63,8 @@ const Cart = (): JSX.Element => {
   function handleProductDecrement(product: Product) {
     const IncrementArguments = {
       productId: product.id,
-      amount: product.amount - 1
+      amount: product.amount - 1,
+      shippingValue: product.shippingValue - 10
     }
     updateProductAmount(IncrementArguments)
   }
@@ -60,6 +81,7 @@ const Cart = (): JSX.Element => {
             <th aria-label="product image" />
             <th>PRODUTO</th>
             <th>QTD</th>
+            <th>FRETE</th>
             <th>SUBTOTAL</th>
             <th aria-label="delete icon" />
           </tr>
@@ -100,6 +122,9 @@ const Cart = (): JSX.Element => {
               </div>
             </td>
             <td>
+              <strong>{product.shippingValueFormatted}</strong>
+            </td>
+            <td>
               <strong>{product.subtotal}</strong>
             </td>
             <td>
@@ -121,7 +146,7 @@ const Cart = (): JSX.Element => {
 
         <Total>
           <span>TOTAL</span>
-          <strong>{total}</strong>
+          <strong>{formatPrice(total)}</strong>
         </Total>
       </footer>
     </Container>
