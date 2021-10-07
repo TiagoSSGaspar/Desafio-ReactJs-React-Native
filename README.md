@@ -5,10 +5,8 @@
 
 ## Getting started
 
-Run yarn or npm install
-
 ```
-npm install -g json-server
+Run yarn or npm install
 ```
 
 Start JSON Server
